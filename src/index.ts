@@ -48,7 +48,12 @@ AppDataSource.initialize()
         credentials: true,
       })
     );
-    app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
+    app.use(
+      rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: process.env.NODE_ENV === "production" ? 100 : 100000000,
+      })
+    );
     app.use(express.json());
     app.use(cookieParser());
 
