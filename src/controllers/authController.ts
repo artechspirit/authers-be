@@ -74,7 +74,7 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      path: "/",
+      path: "/auth/refresh_token",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 hari
     });
 
@@ -110,7 +110,7 @@ export const refreshToken = async (req: Request, res: Response) => {
       .cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        path: "/",
+        path: "/auth/refresh_token",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ accessToken: newAccessToken });
@@ -136,7 +136,7 @@ export const logout = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      path: "/",
+      path: "/auth/refresh_token",
     });
 
     return res.json({ message: "Logout berhasil" });
