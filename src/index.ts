@@ -26,6 +26,11 @@ export const AppDataSource = new DataSource({
   subscribers: [],
 });
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://authers-fe.vercel.app",
+];
+
 AppDataSource.initialize()
   .then(() => {
     const app = express();
@@ -33,7 +38,13 @@ AppDataSource.initialize()
     app.use(helmet());
     app.use(
       cors({
-        origin: "http://localhost:3000", // ganti sesuai frontend URL
+        origin: function (origin, callback) {
+          if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+          } else {
+            callback(new Error("Not allowed by CORS"));
+          }
+        },
         credentials: true,
       })
     );
