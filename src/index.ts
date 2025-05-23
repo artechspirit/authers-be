@@ -11,6 +11,7 @@ import { User } from "./entities/User";
 
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import { sanitizeInput } from "./middlewares/sanitizeInput";
 
 dotenv.config();
 
@@ -51,10 +52,11 @@ AppDataSource.initialize()
     app.use(
       rateLimit({
         windowMs: 15 * 60 * 1000,
-        max: process.env.NODE_ENV === "production" ? 100 : 100000000,
+        max: process.env.NODE_ENV === "production" ? 100 : 1000,
       })
     );
     app.use(express.json());
+    app.use(sanitizeInput);
     app.use(cookieParser());
 
     app.use("/api/auth", authRoutes);
